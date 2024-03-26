@@ -1,8 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  server: {
-    port: 80
-  },
   devtools: { enabled: true },
   modules: [
     '@nuxt/ui',
