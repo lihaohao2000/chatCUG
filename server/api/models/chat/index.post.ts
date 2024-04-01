@@ -19,6 +19,8 @@ If the context doesn't contain any relevant information to the question, don't m
 </context>
 `;
 
+const SYSTEM_TEMPLATE_CN = "你是非常专业的个人助手，请基于以下内容回答我的问题。你的回答需要按照Markdown格式。如果以下内容不包含任何与我的问题相关的内容，请忽略以下内容：<context>{context}</context>"
+
 export default defineEventHandler(async (event) => {
   const { knowledgebaseId, model, messages, stream } = await readBody(event);
 

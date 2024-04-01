@@ -7,6 +7,7 @@ import { MultiPartData, type H3Event } from 'h3';
 import prisma from '@/server/utils/prisma';
 import { createEmbeddings, isOllamaModelExists } from '@/server/utils/models';
 import { createRetriever } from '@/server/retriever';
+import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 
 const ingestDocument = async (
   file: MultiPartData,
@@ -16,16 +17,19 @@ const ingestDocument = async (
 ) => {
   const docs = await loadDocuments(file)
 
-  // const textSplitter = new RecursiveCharacterTextSplitter({ chunkSize: 1000, chunkOverlap: 200 });
-  // const splits = await textSplitter.splitDocuments(docs);
+  const textSplitter = new RecursiveCharacterTextSplitter({ separators: ['\r\n', '\n', ' ', '。', ''], chunkSize: 150, chunkOverlap: 30 });
+  const splits = await textSplitter.splitDocuments(docs);
+
+  console.log("slipts are: ", splits)
+
   const embeddings = createEmbeddings(embedding, event);
 
   // await chromaClient.addDocuments(splits);
   const retriever = await createRetriever(embeddings, collectionName);
 
-  await retriever.addDocuments(docs);
+  await retriever.addDocuments(splits);
 
-  console.log(`${docs.length} documents added to Chroma collection ${collectionName}.`);
+  console.log(`${splits.length} documents added to Chroma collection ${collectionName}.`);
 }
 
 async function loadDocuments(file: MultiPartData) {

@@ -1,7 +1,6 @@
-import { ChromaClient, ChromaClientParams, DeleteCollectionParams } from 'chromadb'
+import { ChromaClient, ChromaClientParams } from 'chromadb'
 import { type KnowledgeBase } from "@prisma/client";
 import prisma from "@/server/utils/prisma";
-import { RedisDocstore } from '~/server/docstore/redis';
 
 const deleteKnowledgeBase = async (
   id?: string
@@ -25,12 +24,6 @@ const deleteKnowledgeBase = async (
       };
       const chromaClient = new ChromaClient(dbConfig);
       await chromaClient.deleteCollection({ name: collectionName });
-
-      // Delete documents storage
-      if (process.env.REDIS_HOST) {
-        console.log("Deleting documents from docstore namespace: ", collectionName);
-        await new RedisDocstore(collectionName).deleteAll();
-      }
     }
 
     return deletedKnowledgeBase;
