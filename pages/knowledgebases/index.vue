@@ -94,7 +94,7 @@ function reset() {
 <template>
   <div class="flex flex-row w-full">
     <div class="px-6 w-[400px]">
-      <h2 class="font-bold text-xl mb-4">Create a New Knowledge Base</h2>
+      <h2 class="font-bold text-xl mb-4">上传文件到知识库</h2>
       <UForm :state="state" :validate="validate" class="space-y-4" @submit="onSubmit">
         <UFormGroup label="Name" name="name" required>
           <UInput type="text" v-model="state.name" />
@@ -119,7 +119,7 @@ function reset() {
       </UForm>
     </div>
     <div class="flex flex-col flex-1 px-6">
-      <h2 class="font-bold text-xl mb-4">Knowledge Bases</h2>
+      <h2 class="font-bold text-xl mb-4">知识库</h2>
       <ClientOnly>
         <UTable :columns="columns" :rows="knowledgeBases">
           <template #name-data="{ row }">
@@ -141,9 +141,11 @@ function reset() {
               </UPopover>
             </div>
           </template>
+
           <template #description-data="{ row }">
             <span class="text-wrap">{{ row.description }}</span>
           </template>
+          
           <template #actions-data="{ row }">
             <UDropdown :items="actionsItems(row)">
               <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />

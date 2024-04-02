@@ -1,8 +1,8 @@
 <template>
     <div class="text-lg">
-        <h1 class="font-bold text-2xl my-8">Welcome to ChatOllama</h1>
+        <h1 class="font-bold text-2xl my-8">Welcome to ChatCUG</h1>
 
-        <p>ChatOllama is a web application that allows you to manage your <a class="text-primary font-bold" href="https://ollama.ai"
+        <p>ChatCUG is a web application that allows you to manage your <a class="text-primary font-bold" href="https://ollama.ai"
                 target="_blank">Ollama</a> server and chat with
             the served LLMs from anywhere in the world.</p>
 

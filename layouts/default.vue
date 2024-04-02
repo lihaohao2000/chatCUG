@@ -27,7 +27,7 @@ const links = [
     icon: 'i-heroicons-cog-6-tooth',
     to: '/settings'
   }], [{
-    label: 'ChatOllama',
+    label: 'ChatCUG',
     labelClass: 'text-2xl font-semibold text-primary'
   }]
 ]
