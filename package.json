@@ -9,7 +9,7 @@
         }
     },
     "scripts": {
-        "build": "nuxt build",
+        "build": "nuxt build --dotenv .env.production",
         "dev": "nuxt dev --host 0.0.0.0 --port 80",
         "generate": "nuxt generate",
         "preview": "nuxt preview",
@@ -17,7 +17,7 @@
         "prisma-migrate": "prisma migrate dev",
         "prisma-generate": "prisma generate",
         "prisma-push": "prisma db push",
-        "start": "nuxt start --host 0.0.0.0 --port 80"
+        "start": "pm2 start ecosystem.config.cjs"
     },
     "devDependencies": {
         "@nuxtjs/google-fonts": "^3.2.0",
