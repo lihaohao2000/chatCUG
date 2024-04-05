@@ -3,6 +3,7 @@ import prisma from '@/server/utils/prisma';
 
 const listKnowledgeBaseFiles = async (): Promise<KnowledgeBaseFile[] | null> => {
   try {
+    const temp = prisma.knowledgeBase.count({});
     return await prisma.knowledgeBaseFile.findMany({});
   } catch (error) {
     console.error("Error fetching knowledge base files: ", error);
