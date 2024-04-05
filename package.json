@@ -2,6 +2,12 @@
     "name": "nuxt-app",
     "private": true,
     "type": "module",
+    "config": {
+        "nuxt": {
+            "host": "0.0.0.0",
+            "port": "80"
+        }
+    },
     "scripts": {
         "build": "nuxt build",
         "dev": "nuxt dev --host 0.0.0.0 --port 80",
