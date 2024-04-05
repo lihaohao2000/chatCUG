@@ -11,7 +11,7 @@
         "prisma-migrate": "prisma migrate dev",
         "prisma-generate": "prisma generate",
         "prisma-push": "prisma db push",
-        "start": "nuxt start --host 0.0.0.0 --port 80"  // 添加这行来定义启动生产环境的命令
+        "start": "nuxt start --host 0.0.0.0 --port 80"
     },
     "devDependencies": {
         "@nuxtjs/google-fonts": "^3.2.0",
