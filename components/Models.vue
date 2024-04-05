@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { useStorage, useMutationObserver } from '@vueuse/core'
 import { computed, ref } from 'vue';
 import { fetchHeadersOllama } from '@/utils/settings'
 import type { ModelItem } from '@/server/api/models/index.get'
 
+const globalModel = useStorage(`model`, null);
+const globalEmbed = useStorage(`embed`, null);
 const models = ref<ModelItem[]>([]);
 const modelRows = computed(() => {
   return models.value.map((model) => {
@@ -106,6 +109,17 @@ function formatFileSize(bytes?: number) {
         Operations
       </UButton>
     </UDropdown>
+  </div>
+
+  <div class="flex items-center justify-between mb-4 px-4 shrink-0">
+    <div class="flex items-center">
+      <span class="mr-2">Chat with</span>
+      <ModelsDropdown v-model="globalModel" placeholder="Select a model" />
+    </div>
+    <div class="flex items-center">
+      <span class="mr-2">Embedded with</span>
+      <ModelsDropdown v-model="globalEmbed" placeholder="Select a model" />
+    </div>
   </div>
 
   <ClientOnly>

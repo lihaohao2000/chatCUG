@@ -60,12 +60,12 @@ export const fetchHeadersThirdApi = computed(() => {
   }
 })
 
-export const loadOllamaInstructions = async () => {
-  try {
-    const { instructions } = await $fetch<Record<string, { id: number, name: string, instruction: string }[]>>(`/api/instruction/`);
-    return instructions;
-  } catch (e) {
-    console.error("Failed to fetch Ollama instructions", e);
-    return []
-  }
-};
+// export const loadOllamaInstructions = async () => {
+//   try {
+//     const { instructions } = await $fetch<Record<string, { id: number, name: string, instruction: string }[]>>(`/api/instruction/`);
+//     return instructions;
+//   } catch (e) {
+//     console.error("Failed to fetch Ollama instructions", e);
+//     return []
+//   }
+// };

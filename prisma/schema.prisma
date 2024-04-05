@@ -21,12 +21,8 @@ model KnowledgeBase {
 model KnowledgeBaseFile {
   id              Int           @id @default(autoincrement())
   url             String
+  description     String?
+  created         DateTime?
   knowledgeBase   KnowledgeBase @relation("Files", fields: [knowledgeBaseId], references: [id], onDelete: Cascade)
   knowledgeBaseId Int
-}
-
-model Instruction {
-  id          Int    @id @default(autoincrement())
-  name        String @unique
-  instruction String
 }

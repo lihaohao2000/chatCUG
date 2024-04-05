@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { fetchHeadersOllama, fetchHeadersThirdApi } from '@/utils/settings'
-import { type KnowledgeBase } from '@prisma/client';
+import { type KnowledgeBaseFile } from '@prisma/client';
 
 const toast = useToast()
 const state = reactive({
@@ -30,9 +30,9 @@ const onSubmit = async () => {
     formData.append(`file_${index}`, file);
   });
 
-  formData.append("name", state.name);
+  // formData.append("name", state.name);
   formData.append("description", state.description);
-  formData.append("embedding", state.embedding);
+  // formData.append("embedding", state.embedding);
 
   try {
     await $fetch(`/api/knowledgebases/`, {
@@ -57,17 +57,20 @@ const { data, refresh } = await useFetch('/api/knowledgebases');
 
 const columns = [
   { key: 'id', label: 'ID' },
-  { key: 'name', label: 'Name' },
-  { key: 'files', label: 'No. of Files' },
-  { key: 'description', label: 'Description' },
-  { key: 'embedding', label: 'Embedding' },
+  { key: 'url', label: '文件名' },
+  { key: 'description', label: '文件描述' },
+  { key: 'created', label: '创建时间' },
   { key: 'actions' }
 ];
 
-const knowledgeBases = computed(() => data.value?.knowledgeBases || []);
+const knowledgeBaseFiles = computed(() => data.value?.knowledgeBaseFiles || []);
 
+const formatDate = (dateString: string | Date): string => {
+  const date = new Date(dateString);
+  return date.toLocaleString(); // 根据需要使用其他格式化方式
+};
 
-const actionsItems = (row: KnowledgeBase) => {
+const actionsItems = (row: KnowledgeBaseFile) => {
   return [[{
     label: 'Delete',
     icon: 'i-heroicons-trash-20-solid',
@@ -96,40 +99,40 @@ function reset() {
     <div class="px-6 w-[400px]">
       <h2 class="font-bold text-xl mb-4">上传文件到知识库</h2>
       <UForm :state="state" :validate="validate" class="space-y-4" @submit="onSubmit">
-        <UFormGroup label="Name" name="name" required>
+        <!-- <UFormGroup label="Name" name="name" required>
           <UInput type="text" v-model="state.name" />
         </UFormGroup>
 
         <UFormGroup label="Embedding" name="embedding" required>
           <UInput type="text" v-model="state.embedding" />
-        </UFormGroup>
+        </UFormGroup> -->
 
-        <UFormGroup label="Description" name="description">
-          <UTextarea autoresize :rows="2" v-model="state.description" />
-        </UFormGroup>
-
-        <UFormGroup label="Files as Knowledge Base" name="file">
+        <UFormGroup label="需要上传的文件" name="file">
           <UInput multiple type="file" size="sm" accept=".txt,.json,.md,.doc,.docx,.pdf" v-model="state.selectedFiles"
             @change="onFileChange" />
         </UFormGroup>
 
+        <UFormGroup label="文件描述" name="description">
+          <UTextarea autoresize :rows="2" v-model="state.description" />
+        </UFormGroup>
+
         <UButton type="submit" :loading="loading">
-          Save
+          上传
         </UButton>
       </UForm>
     </div>
     <div class="flex flex-col flex-1 px-6">
       <h2 class="font-bold text-xl mb-4">知识库</h2>
       <ClientOnly>
-        <UTable :columns="columns" :rows="knowledgeBases">
-          <template #name-data="{ row }">
+        <UTable :columns="columns" :rows="knowledgeBaseFiles">
+          <!-- <template #name-data="{ row }">
             <ULink :to="`/knowledgebases/${row.id}`"
               class="text-blue-600 dark:text-blue-300 hover:text-blue-700 dark:hover:text-blue-200 underline text-wrap">
               {{ row.name }}
             </ULink>
-          </template>
+          </template> -->
 
-          <template #files-data="{ row }">
+          <!-- <template #files-data="{ row }">
             <div class="inline-flex">
               <UPopover mode="hover" :popper="{ placement: 'right' }">
                 <UButton color="gray" variant="soft" :label="'' + row.files.length" />
@@ -140,10 +143,16 @@ function reset() {
                 </template>
               </UPopover>
             </div>
-          </template>
+          </template> -->
+
+
 
           <template #description-data="{ row }">
             <span class="text-wrap">{{ row.description }}</span>
+          </template>
+
+          <template #created-data="{ row }">
+            <span>{{ formatDate(row.created) }}</span>
           </template>
           
           <template #actions-data="{ row }">

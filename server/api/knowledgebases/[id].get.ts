@@ -8,9 +8,14 @@ const listKnowledgeBase = async (
     let knowledgeBase = null;
 
     if (id) {
+      const knowledgeBaseFile = await prisma.knowledgeBaseFile.findUnique({
+        where: {
+          id : parseInt(id)
+        }
+      })
       knowledgeBase = await prisma.knowledgeBase.findUnique({
         where: {
-          id: parseInt(id),
+          id: knowledgeBaseFile?.knowledgeBaseId,
         },
       });
     }

@@ -1,40 +1,49 @@
 import { ChromaClient, ChromaClientParams } from 'chromadb'
-import { type KnowledgeBase } from "@prisma/client";
+import { type KnowledgeBaseFile } from "@prisma/client";
 import prisma from "@/server/utils/prisma";
 
-const deleteKnowledgeBase = async (
+const deleteKnowledgeBaseFile = async (
   id?: string
-): Promise<KnowledgeBase | null> => {
+): Promise<KnowledgeBaseFile | null> => {
   try {
-    let deletedKnowledgeBase = null;
+    let deletedKnowledgeBaseFile = null;
     if (id) {
-      // Delete knowledge base from database
-      deletedKnowledgeBase = await prisma.knowledgeBase.delete({
+      // Delete knowledge base File from database
+      deletedKnowledgeBaseFile = await prisma.knowledgeBaseFile.delete({
         where: {
           id: parseInt(id),
         },
       });
 
-      // Delete vectore storage
-      const collectionName = `collection_${id}`;
+      // Delete File From Chroma
+      const collectionName = `collection_${deletedKnowledgeBaseFile.knowledgeBaseId}`;
 
-      console.log("Deleting Chroma collection: ", collectionName);
+      console.log("Deleting File From Chroma collection: ", collectionName);
       const dbConfig: ChromaClientParams = {
         path: process.env.CHROMADB_URL
       };
       const chromaClient = new ChromaClient(dbConfig);
-      await chromaClient.deleteCollection({ name: collectionName });
-    }
+      const collection = await chromaClient.getCollection({ name: collectionName })
 
-    return deletedKnowledgeBase;
+      await collection.delete({
+        where: {
+          "id": {
+            "$eq": parseInt(id)
+          }
+        }
+      })
+
+      console.log("Deleted File: ",id , " From Chroma collection: ", collectionName);
+    }
+    return deletedKnowledgeBaseFile;
   } catch (error) {
-    console.error(`Error deleting knowledge base with id ${id}:`, error);
+    console.error(`Error deleting knowledge base file with id ${id}:`, error);
     return null;
   }
 };
 
 export default defineEventHandler(async (event) => {
   const id = event?.context?.params?.id;
-  const deletedKnowledgeBase = await deleteKnowledgeBase(id);
-  return { deletedKnowledgeBase };
+  const deletedKnowledgeBaseFile = await deleteKnowledgeBaseFile(id);
+  return { deletedKnowledgeBaseFile };
 });

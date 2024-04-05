@@ -1,20 +1,16 @@
-import { type KnowledgeBase } from '@prisma/client';
+import { type KnowledgeBaseFile } from '@prisma/client';
 import prisma from '@/server/utils/prisma';
 
-const listKnowledgeBases = async (): Promise<KnowledgeBase[] | null> => {
+const listKnowledgeBaseFiles = async (): Promise<KnowledgeBaseFile[] | null> => {
   try {
-    return await prisma.knowledgeBase.findMany({
-      include: {
-        files: true
-      }
-    });
+    return await prisma.knowledgeBaseFile.findMany({});
   } catch (error) {
-    console.error("Error fetching knowledge bases: ", error);
+    console.error("Error fetching knowledge base files: ", error);
     return null;
   }
 }
 
 export default defineEventHandler(async (event) => {
-  const knowledgeBases = await listKnowledgeBases();
-  return { knowledgeBases };
+  const knowledgeBaseFiles = await listKnowledgeBaseFiles();
+  return { knowledgeBaseFiles };
 })

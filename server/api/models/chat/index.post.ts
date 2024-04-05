@@ -24,7 +24,7 @@ const SYSTEM_TEMPLATE_CN = "你是非常专业的个人助手，请基于以下�
 export default defineEventHandler(async (event) => {
   const { knowledgebaseId, model, messages, stream } = await readBody(event);
 
-  if (knowledgebaseId) {
+  // if (knowledgebaseId) {
     console.log("Chat with knowledge base with id: ", knowledgebaseId);
     const knowledgebase = await prisma.knowledgeBase.findUnique({
       where: {
@@ -102,24 +102,24 @@ export default defineEventHandler(async (event) => {
       }
     })());
     return sendStream(event, readableStream);
-  } else {
-    const llm = createChatModel(model, event);
-    const response = await llm?.stream(messages.map((message) => {
-      return [message.role, message.content];
-    }));
+  // } else {
+  //   const llm = createChatModel(model, event);
+  //   const response = await llm?.stream(messages.map((message) => {
+  //     return [message.role, message.content];
+  //   }));
 
-    const readableStream = Readable.from((async function* () {
-      for await (const chunk of response) {
-        const message = {
-          message: {
-            role: 'assistant',
-            content: chunk?.content
-          }
-        };
-        yield `${JSON.stringify(message)}\n\n`;
-      }
-    })());
+  //   const readableStream = Readable.from((async function* () {
+  //     for await (const chunk of response) {
+  //       const message = {
+  //         message: {
+  //           role: 'assistant',
+  //           content: chunk?.content
+  //         }
+  //       };
+  //       yield `${JSON.stringify(message)}\n\n`;
+  //     }
+  //   })());
 
-    return sendStream(event, readableStream);
-  }
+  //   return sendStream(event, readableStream);
+  // }
 })
