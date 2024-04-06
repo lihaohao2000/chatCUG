@@ -1,10 +1,12 @@
 <script setup lang="ts">
   import { useStorage } from '@vueuse/core';
+  import prisma from '@/server/utils/prisma';
   useSeoMeta({
     description: 'ChatCUG是中国联通国际公司内部使用的定制化语言模型平台。'
   })
   const globalModel = useStorage(`model`, process.env.DEFAULT_MODEL);
   const globalEmbed = useStorage(`embed`, process.env.DEFAULT_EMBED);
+  console
   const defaultKnowledgeBaseName = "DEFAULT_KNOWLEDGEBASE"
   if (await prisma.knowledgeBase.count({}) == 0) {
       const affected = await prisma.knowledgeBase.create({
