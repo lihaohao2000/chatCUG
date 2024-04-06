@@ -4,7 +4,7 @@ module.exports = {
         name: 'ChatCUG',
         exec_mode: 'cluster',
         instances: 'max',
-        script: './server/index.mjs',
+        script: './.output/server/index.mjs',
         env: {
             NODE_ENV: 'production',
             PORT: 80,
