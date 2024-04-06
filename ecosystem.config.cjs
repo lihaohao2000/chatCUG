@@ -9,7 +9,7 @@ module.exports = {
             NODE_ENV: 'production',
             PORT: 80,
             DISABLE_VERCEL_ANALYTICS: false,
-            DATABASE_URL: 'file:./ChatCUG.sqlite',
+            DATABASE_URL: 'file:../ChatCUG.sqlite',
             CHROMADB_URL: 'http://localhost:8000',
 
             LANGCHAIN_TRACING_V2: false,
