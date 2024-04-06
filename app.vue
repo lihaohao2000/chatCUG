@@ -8,6 +8,7 @@
   const globalEmbed = useStorage(`embed`, process.env.DEFAULT_EMBED);
   console.log(globalModel)
   console.log(globalEmbed)
+  console.log(process.env.DATABASE_URL)
   const defaultKnowledgeBaseName = "DEFAULT_KNOWLEDGEBASE"
   if (await prisma.knowledgeBase.count({}) == 0) {
       const affected = await prisma.knowledgeBase.create({
