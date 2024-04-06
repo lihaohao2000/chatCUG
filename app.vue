@@ -6,7 +6,8 @@
   })
   const globalModel = useStorage(`model`, process.env.DEFAULT_MODEL);
   const globalEmbed = useStorage(`embed`, process.env.DEFAULT_EMBED);
-  console
+  console.log(globalModel)
+  console.log(globalEmbed)
   const defaultKnowledgeBaseName = "DEFAULT_KNOWLEDGEBASE"
   if (await prisma.knowledgeBase.count({}) == 0) {
       const affected = await prisma.knowledgeBase.create({
