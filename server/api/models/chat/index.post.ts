@@ -22,7 +22,7 @@ If the context doesn't contain any relevant information to the question, don't m
 const SYSTEM_TEMPLATE_CN = "你是非常专业的个人助手，请基于以下内容回答我的问题。你的回答需要按照Markdown格式。如果以下内容不包含任何与我的问题相关的内容，请忽略以下内容：<context>{context}</context>"
 
 export default defineEventHandler(async (event) => {
-  const { knowledgebaseId, model, messages, stream } = await readBody(event);
+  const { knowledgebaseId, messages, stream } = await readBody(event);
 
   // if (knowledgebaseId) {
     console.log("Chat with knowledge base with id: ", knowledgebaseId);
@@ -46,7 +46,11 @@ export default defineEventHandler(async (event) => {
       new MessagesPlaceholder("messages"),
     ]);
 
-    const chat = createChatModel(model, event);
+    if (process.env.DEFAULT_MODEL == undefined) {
+      setResponseStatus(event, 500, `Default model is undefined`);
+      return;
+    }
+    const chat = createChatModel(process.env.DEFAULT_MODEL, event);
 
     const query = messages[messages.length - 1].content
     console.log("User query: ", query);

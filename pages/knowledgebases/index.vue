@@ -5,15 +5,19 @@ import { type KnowledgeBaseFile } from '@prisma/client';
 const toast = useToast()
 const state = reactive({
   selectedFiles: '',
-  name: '',
-  embedding: '',
-  description: '',
+  description: ''
 });
 
 const validate = (data: typeof state) => {
   const errors = []
-  if (!data.name) errors.push({ path: 'name', message: 'Required' })
-  if (!data.embedding) errors.push({ path: 'embedding', message: 'Required' })
+  // if (!data.name) errors.push({ path: 'name', message: 'Required' })
+  // if (!data.embedding) errors.push({ path: 'embedding', message: 'Required' })
+  if (data.selectedFiles.length == 0) {
+    errors.push({
+      path: 'selectedFiles',
+      message: 'Required'
+    })
+  }
   return errors
 }
 
@@ -66,8 +70,8 @@ const columns = [
 const knowledgeBaseFiles = computed(() => data.value?.knowledgeBaseFiles || []);
 
 const formatDate = (dateString: string | Date): string => {
-  const date = new Date(dateString);
-  return date.toLocaleString(); // 根据需要使用其他格式化方式
+  const date = new Date(dateString)
+  return date.toLocaleString()
 };
 
 const actionsItems = (row: KnowledgeBaseFile) => {
@@ -87,8 +91,6 @@ const onDelete = async (id: number) => {
 }
 
 function reset() {
-  state.name = '';
-  state.embedding = '';
   state.description = '';
   state.selectedFiles = '';
 }

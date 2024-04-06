@@ -8,9 +8,6 @@ import prisma from '@/server/utils/prisma';
 import { createEmbeddings, isOllamaModelExists } from '@/server/utils/models';
 import { createRetriever } from '@/server/retriever';
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { useStorage } from '@vueuse/core';
-
-const globalEmbed = useStorage(`embed`, null);
 
 const ingestDocument = async (
   file: MultiPartData,
@@ -84,42 +81,34 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  if (globalEmbed.value == null) {
-    setResponseStatus(event, 400);
-    return {
-      status: "error",
-      message: "Must choose one embedding model"
-    }
-  }
-
-  if (!(await isOllamaModelExists(ollama, globalEmbed.value))) {
-    setResponseStatus(event, 404);
-    return {
-      status: "error",
-      message: "Embedding model does not exist in Ollama"
-    }
-  }
-
-  // const exist = await prisma.knowledgeBase.count({ where: { name: _name } }) > 0;
-  // if (exist) {
-  //   setResponseStatus(event, 409);
+  // if (globalEmbed.value == null) {
+  //   setResponseStatus(event, 500);
   //   return {
   //     status: "error",
-  //     message: "Knowledge Base's Name already exist"
+  //     message: "Embedding model is null"
   //   }
   // }
+
+  // if (!(await isOllamaModelExists(ollama, globalEmbed.value))) {
+  //   setResponseStatus(event, 404);
+  //   return {
+  //     status: "error",
+  //     message: "Embedding model does not exist in Ollama"
+  //   }
+  // }
+
   let affected
-  if (await prisma.knowledgeBase.count({}) == 0) {
-    affected = await prisma.knowledgeBase.create({
-        data: {
-          name: defaultKnowledgeBaseName,
-          description: "The default knowledgebase, all files will be added in this base.",
-          embedding: globalEmbed.value,
-          created: new Date()
-        }
-      });
-      console.log(`Initialized knowledge base ${affected.name}, ID: ${affected.id}, Embedding model: ${globalEmbed.value}.`);
-  } else {
+  // if (await prisma.knowledgeBase.count({}) == 0) {
+  //   affected = await prisma.knowledgeBase.create({
+  //       data: {
+  //         name: defaultKnowledgeBaseName,
+  //         description: "The default knowledgebase, all files will be added in this base.",
+  //         embedding: globalEmbed.value,
+  //         created: new Date()
+  //       }
+  //     });
+  //     console.log(`Initialized knowledge base ${affected.name}, ID: ${affected.id}, Embedding model: ${globalEmbed.value}.`);
+  // } else {
     try {
       affected = await prisma.knowledgeBase.findUniqueOrThrow({
         where: {
@@ -133,7 +122,7 @@ export default defineEventHandler(async (event) => {
         message: "Error finding default knowledge base"
       }
     }
-  }
+  // }
 
   for (const uploadedFile of uploadedFiles) {
     try {
