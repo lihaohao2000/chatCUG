@@ -3,11 +3,11 @@ const route = useRoute()
 
 const links = [
   [{
-    label: 'Chat',
+    label: '聊天助手',
     icon: 'i-heroicons-pencil-square',
     to: '/'
   }, {
-    label: 'Knowledge Bases',
+    label: '知识库',
     icon: 'i-heroicons-book-open',
     to: '/knowledgebases'
   }], [{

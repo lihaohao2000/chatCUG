@@ -7,7 +7,7 @@ module.exports = {
         script: './.output/server/index.mjs',
         env: {
             NODE_ENV: 'production',
-            PORT: 80,
+            PORT: 3000,
             DISABLE_VERCEL_ANALYTICS: false,
             DATABASE_URL: 'file:/root/proj/chatCUG/ChatCUG.sqlite',
             CHROMADB_URL: 'http://localhost:8000',

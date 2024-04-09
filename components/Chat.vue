@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useStorage, useMutationObserver, useLocalStorage } from '@vueuse/core'
+import { useMutationObserver, useLocalStorage } from '@vueuse/core'
 import MarkdownIt from "markdown-it";
 import MarkdownItAbbr from "markdown-it-abbr";
 import MarkdownItAnchor from "markdown-it-anchor";
@@ -33,7 +33,8 @@ const markdown = new MarkdownIt()
 
 const chatInputBoxRef = shallowRef()
 
-// const model = useLocalStorage('model', process.env.DEFAULT_MODEL)
+const model = useLocalStorage('model', "qwen:latest")
+
 const messages = ref<Array<{ role: 'system' | 'assistant' | 'user', content: string, type?: 'loading' | 'canceled' }>>([]);
 const sending = ref(false);
 let abortHandler: (() => void) | null = null;
@@ -42,9 +43,9 @@ const visibleMessages = computed(() => {
   return messages.value.filter((message) => message.role !== 'system');
 });
 
-// watch(model, async (newModel) => {
-//   messages.value = [];
-// })
+watch(model, async (newModel) => {
+  messages.value = [];
+})
 
 const fetchStream = async (url: string, options: RequestInit) => {
   const response = await fetch(url, options);
@@ -101,7 +102,7 @@ const onSend = async (data: ChatBoxFormData) => {
   const body = JSON.stringify({
     // knowledgebaseId: props.knowledgebase?.id,
     knowledgebaseId: 1,
-    // model: model.value,
+    model: model.value,
     messages: [...messages.value.filter(m => m.type !== 'loading')],
     stream: true,
   })
@@ -169,7 +170,7 @@ function onAbortChat() {
         </div>
       </div>
       <div class="shrink-0 pt-4 px-4">
-        <ChatInputBox ref="chatInputBoxRef" :disabled="false" :loading="sending" @submit="onSend" @stop="onAbortChat" />
+        <ChatInputBox ref="chatInputBoxRef" :disabled="!model" :loading="sending" @submit="onSend" @stop="onAbortChat" />
       </div>
     </div>
   </div>

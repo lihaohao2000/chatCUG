@@ -68,7 +68,7 @@ function onReset() {
     :class="[isFocus ? 'shadow-lg' : 'shadow-md', { 'border-primary-400 dark:border-primary-900': isFocus }]">
     <UForm :state="state" @submit="onSubmit">
       <TheTextarea v-model="state.content" :max-rows="15" :min-rows="1" :submit-mode="submitMode"
-        placeholder="Say something..." @focus="isFocus = true" @blur="isFocus = false" />
+        placeholder="说些什么..." @focus="isFocus = true" @blur="isFocus = false" />
       <div class="flex">
         <div class="flex items-center ml-auto">
           <ClientOnly>

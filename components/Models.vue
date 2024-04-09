@@ -4,8 +4,8 @@ import { computed, ref } from 'vue';
 import { fetchHeadersOllama } from '@/utils/settings'
 import type { ModelItem } from '@/server/api/models/index.get'
 
-// const globalModel = useLocalStorage(`model`, process.env.DEFAULT_MODEL);
-// console.log("Models: ",globalModel.value)
+const globalModel = useLocalStorage(`model`, process.env.DEFAULT_MODEL);
+console.log("Models: ",globalModel.value)
 const models = ref<ModelItem[]>([]);
 const modelRows = computed(() => {
   return models.value.map((model) => {
@@ -111,12 +111,12 @@ function formatFileSize(bytes?: number) {
     </UDropdown>
   </div>
 
-  <!-- <div class="flex items-center justify-between mb-4 px-4 shrink-0">
+  <div class="flex items-center justify-between mb-4 px-4 shrink-0">
     <div class="flex items-center">
       <span class="mr-2">Chat with</span>
       <ModelsDropdown v-model="globalModel" placeholder="Select a model" />
     </div>
-  </div> -->
+  </div>
 
   <ClientOnly>
     <UTable :columns="columns" :rows="modelRows" @select="select" v-model="selectedRows"></UTable>
