@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   app: {
     head: {
-      title: "ChatCUG",
+      title: "CUSGGPT",
       link: [
         {rel: "icon", type: "image/x-icon", href: "/CU.ico"}
       ]

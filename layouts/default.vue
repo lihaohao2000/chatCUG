@@ -11,7 +11,7 @@ const links = [
     icon: 'i-heroicons-book-open',
     to: '/knowledgebases'
   }], [{
-    label: 'ChatCUG',
+    label: 'CUSGGPT',
     labelClass: 'text-2xl font-semibold text-primary'
   }]
 ]
